@@ -32,8 +32,9 @@ jobs:
       
       - name: Build, tag, and push main image to Jfrog
         run: |
-          docker build -t scybersdev.jfrog.io/jfrog-nodejs:latest .
-          docker push scybersdev.jfrog.io/jfrog-nodejs:latest
+          docker build -t jfrog-nodejs:latest .
+          docker tag jfrog-nodejs:latest scybersdev.jfrog.io/sarasa/jfrog-nodejs:latest
+          docker push scybersdev.jfrog.io/sarasa/jfrog-nodejs:latest
 
       # - name: Install persistable python venv and dependencies
       #   run: make setup
