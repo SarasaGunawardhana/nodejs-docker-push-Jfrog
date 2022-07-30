@@ -26,6 +26,42 @@ jobs:
       - name: Login to Jfrog Artifactory
         uses: docker/login-action@v1
         with:
-          registry: scybersdev.jfrog.io/
+          registry: scybersdev.jfrog.io
           username: ${{ secrets.ARTIFACTORY_USER }}
           password: ${{ secrets.ARTIFACTORY_TOKEN }}
+      
+      - name: Build, tag, and push main image to Jfrog
+        run: |
+          docker build -t scybersdev.jfrog.io/jfrog-nodejs:latest .
+          docker push scybersdev.jfrog.io/jfrog-nodejs:latest
+
+      # - name: Install persistable python venv and dependencies
+      #   run: make setup
+
+      # - name: Package Python code with dependencies
+      #   run: make package
+
+      # - name: Setup Jfrog CLI
+      #   uses: jfrog/setup-jfrog-cli@v2
+
+      # - name: Jfrog Version
+      #   run: jfrog --version
+
+      # - name: Versioning and Tagging (mocked v0.0.0)
+      #   id: semver
+      #   run: echo "::set-output name=tag::v0.0.0"
+
+      # - name: Set git commit hash variable
+      #   id: gitvars
+      #   run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+
+      # - name: Upload artefacts
+      #   env:
+      #     SEMVER: ${{ steps.semver.outputs.tag }}
+      #     GIT_SHA: ${{ steps.gitvars.outputs.sha_short }}
+      #   run: |
+      #     cd ./out/artefact
+      #     jfrog rt upload "*.zip" "generic-local-non-prod/${{ env.projectName }}/${{ env.SEMVER }}-${{ env.GIT_SHA }}/" \
+      #     --url https://projectolympus.jfrog.io/artifactory \
+      #     --user ${{ secrets.ARTIFACTORY_USER }} \
+      #     --access-token=${{ secrets.ARTIFACTORY_TOKEN }}
